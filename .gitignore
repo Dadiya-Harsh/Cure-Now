@@ -2,3 +2,10 @@
 /Scripts
 /share
 /data
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+/model
+/Include

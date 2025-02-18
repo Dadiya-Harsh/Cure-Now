@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cure-Now Health Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cure-Now Health Chatbot</h1>
+            <p>Ask me anything about health and medical conditions</p>
+        </header>
+        
+        <div class="chat-container" id="chatContainer">
+            <div class="messages" id="messageArea">
+                <!-- Messages will be inserted here -->
+            </div>
+        </div>
+
+        <div class="input-area">
+            <form id="chatForm">
+                <input type="text" id="userInput" placeholder="Type your health question here..." required>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
 from app.config import Config
 from app.utils.embeddings import get_embeddings
 from app.utils.pinecone_ops import initialize_pinecone, get_vector_store
@@ -13,6 +13,10 @@ vector_store = get_vector_store(pc, Config.PINECONE_INDEX_NAME, embeddings)
 llm = get_llm(Config.GEMINI_API_KEY)
 retriever = vector_store.as_retriever(search_type='similarity', search_kwargs={'k': 3})
 qa_chain = create_qa_chain(llm, retriever)
+
+@main.route('/')
+def home():
+    return render_template('index.html')
 
 @main.route('/chat', methods=['POST'])
 def chat():
