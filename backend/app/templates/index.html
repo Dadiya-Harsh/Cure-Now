@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cure-Now Health Assistant</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --background-color: #f3f4f6;
+            --chat-bg: #ffffff;
+            --text-color: #1f2937;
+            --bot-message-bg: #e5e7eb;
+            --user-message-bg: #2563eb;
+            --user-message-color: #ffffff;
+            --loading-dot-color: #2563eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--chat-bg);
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header h1 {
+            color: var(--text-color);
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .chat-container {
+            flex: 1;
+            background: var(--chat-bg);
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-header i {
+            font-size: 1.2rem;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            position: relative;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-message {
+            background: var(--user-message-bg);
+            color: var(--user-message-color);
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot-message {
+            background: var(--bot-message-bg);
+            color: var(--text-color);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            background: var(--bot-message-bg);
+            border-radius: 12px;
+            align-self: flex-start;
+            animation: messageSlide 0.3s ease;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--loading-dot-color);
+            border-radius: 50%;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
+
+        .input-area {
+            padding: 20px;
+            background: var(--chat-bg);
+            border-top: 1px solid #e5e7eb;
+        }
+
+        #chatForm {
+            display: flex;
+            gap: 10px;
+        }
+
+        #userInput {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        #userInput:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        button {
+            padding: 12px 24px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background: var(--secondary-color);
+        }
+
+        button i {
+            font-size: 1.1rem;
+        }
+
+        .suggestions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .suggestion {
+            padding: 8px 16px;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .suggestion:hover {
+            background: #e5e7eb;
+            border-color: #d1d5db;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 10px;
+            }
+
+            header {
+                padding: 15px;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+
+            .suggestions {
+                gap: 8px;
+            }
+
+            .suggestion {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <i class="fas fa-heartbeat logo"></i>
+            <h1>Cure-Now Health Assistant</h1>
+            <p>Your trusted AI companion for health information</p>
+        </header>
+
+        <div class="chat-container">
+            <div class="chat-header">
+                <i class="fas fa-robot"></i>
+                <span>Health Assistant</span>
+            </div>
+
+            <div class="messages" id="messageArea">
+                <!-- Initial bot message -->
+                <div class="message bot-message">
+                    Hello! I'm your Cure-Now health assistant. How can I help you today?
+                </div>
+            </div>
+
+            <div class="input-area">
+                <form id="chatForm">
+                    <input type="text" id="userInput" placeholder="Type your health question here..." required>
+                    <button type="submit">
+                        <i class="fas fa-paper-plane"></i>
+                        Send
+                    </button>
+                </form>
+                <div class="suggestions">
+                    <div class="suggestion">What is diabetes?</div>
+                    <div class="suggestion">Common cold symptoms</div>
+                    <div class="suggestion">How to maintain good health?</div>
+                    <div class="suggestion">First aid basics</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatForm = document.getElementById('chatForm');
+            const userInput = document.getElementById('userInput');
+            const messageArea = document.getElementById('messageArea');
+            const suggestions = document.querySelectorAll('.suggestion');
+
+            // Handle suggestion clicks
+            suggestions.forEach(suggestion => {
+                suggestion.addEventListener('click', () => {
+                    userInput.value = suggestion.textContent;
+                    chatForm.dispatchEvent(new Event('submit'));
+                });
+            });
+
+            chatForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const question = userInput.value.trim();
+                if (!question) return;
+
+                // Add user message
+                addMessage('user', question);
+                userInput.value = '';
+                userInput.focus();
+
+                // Add typing indicator
+                const typingIndicator = document.createElement('div');
+                typingIndicator.className = 'typing-indicator';
+                typingIndicator.innerHTML = `
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                `;
+                messageArea.appendChild(typingIndicator);
+                messageArea.scrollTop = messageArea.scrollHeight;
+
+                try {
+                    // Send request to backend
+                    const response = await fetch('/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ question: question })
+                    });
+
+                    const data = await response.json();
+                    
+                    // Remove typing indicator
+                    typingIndicator.remove();
+                    
+                    // Add bot response
+                    addMessage('bot', data.answer);
+
+                } catch (error) {
+                    // Remove typing indicator
+                    typingIndicator.remove();
+                    
+                    // Add error message
+                    addMessage('bot', 'Sorry, I encountered an error. Please try again.');
+                    console.error('Error:', error);
+                }
+            });
+
+            function addMessage(type, content) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', `${type}-message`);
+                messageDiv.textContent = content;
+                
+                messageArea.appendChild(messageDiv);
+                messageArea.scrollTop = messageArea.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>
