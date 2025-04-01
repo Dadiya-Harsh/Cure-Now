@@ -24,9 +24,10 @@ def create_app():
 
 
     with app.app_context():
-        from app import auth_routes  # Import here to avoid circular import
-        app.register_blueprint(auth_routes.auth)  # Register the auth blueprint
-        app.register_blueprint(routes.main)
+        from app.routes import main  # Import here to avoid circular import
+        from app.auth_routes import auth  # Import here to avoid circular import
+        app.register_blueprint(auth)  # Register the auth blueprint
+        app.register_blueprint(main)
         db.create_all()
 
 
