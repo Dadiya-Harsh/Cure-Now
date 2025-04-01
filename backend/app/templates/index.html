@@ -45,8 +45,11 @@
 
       .auth-container h1 {
         color: var(--text-color);
-        font-size: 2rem;
+        font-size: 1.5rem;
         margin-bottom: 20px;
+        white-space: nowrap; /* Prevents the heading from wrapping */
+        overflow: hidden; /* Ensures no overflow */
+        text-overflow: ellipsis; /* Adds ellipsis if text overflows */
       }
 
       .auth-tabs {
@@ -268,7 +271,7 @@
           })
           .then((data) => {
             if (data.message == "Login successful!") {
-            //   console.log("Response status:", res.status); // Check if the server is responding properly
+              //   console.log("Response status:", res.status); // Check if the server is responding properly
 
               console.log("Token: ", data.token);
               localStorage.setItem("userToken", data.token);
