@@ -263,29 +263,31 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
         })
-          .then((res) =>{ return res.json()})
+          .then((res) => {
+            return res.json();
+          })
           .then((data) => {
-            if (data.success) {
+            if (data.message == "Login successful!") {
+            //   console.log("Response status:", res.status); // Check if the server is responding properly
 
-                    console.log("Response status:", res.status);  // Check if the server is responding properly
-
-              console.log("Token: ",data)
+              console.log("Token: ", data.token);
               localStorage.setItem("userToken", data.token);
               // Redirect to the chat page
-              window.location.href = "http://127.0.0.1:5000/chat_page";
+              if (localStorage.getItem("userToken") != null) {
+                window.location.href = "http://127.0.0.1:5000/chat_page";
+              }
             } else {
               alert("Login failed! " + data.message);
             }
-            console.log("Data: ",data);
-            console.log("Token: ",data.token);
-            localStorage.setItem("userToken", data.token);
+            // console.log("Data: ",data);
+            // console.log("Token: ",data.token);
+            // localStorage.setItem("userToken", data.token);
 
-            console.log("Token: ",localStorage.getItem("userToken"));
-            if(localStorage.getItem("userToken")){
-              window.location.href = "http://127.0.0.1:5000/chat_page";
+            // console.log("Token: ",localStorage.getItem("userToken"));
+            // if(localStorage.getItem("userToken")){
+            //   window.location.href = "http://127.0.0.1:5000/chat_page";
 
-            }
-            
+            // }
           })
           .catch((error) => console.error("Error:", error));
       }
