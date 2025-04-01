@@ -7,6 +7,9 @@ from app import db
 from app.models import User
 from app.config import Config
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_bcrypt import Bcrypt
+
 
 # Flask Blueprint for Auth
 auth = Blueprint('auth', __name__)
@@ -57,7 +60,8 @@ def login():
     if not user or not check_password_hash(user.password, password):
         return jsonify({'message': 'Invalid credentials!'}), 401
     login_user(user)
-    return jsonify({'message': 'Login successful!', 'user': user.email}), 200
+    token = create_access_token(identity=str(user.id))
+    return jsonify({'message': 'Login successful!', 'user': user.email, 'token':token}), 200
 
 @auth.route('/logout')
 def logout():

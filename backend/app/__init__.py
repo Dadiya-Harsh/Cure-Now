@@ -3,10 +3,13 @@ from app.config import Config
 from app.models import db
 from app import routes
 from flask_login import LoginManager
+from flask_jwt_extended import JWTManager
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+
+    JWTManager(app)
 
     db.init_app(app)
 

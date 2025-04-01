@@ -1,239 +1,294 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cure-Now Authentication</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #1e40af;
-            --background-color: #f3f4f6;
-            --chat-bg: #ffffff;
-            --text-color: #1f2937;
-        }
+      :root {
+        --primary-color: #2563eb;
+        --secondary-color: #1e40af;
+        --background-color: #f3f4f6;
+        --chat-bg: #ffffff;
+        --text-color: #1f2937;
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      }
 
-        body {
-            background-color: var(--background-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+      body {
+        background-color: var(--background-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
 
-        .auth-container {
-            background: var(--chat-bg);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
-            width: 380px;
-            box-sizing: border-box;
-        }
+      .auth-container {
+        background: var(--chat-bg);
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 380px;
+        box-sizing: border-box;
+      }
 
-        .auth-container h1 {
-            color: var(--text-color);
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
+      .auth-container h1 {
+        color: var(--text-color);
+        font-size: 2rem;
+        margin-bottom: 20px;
+      }
 
-        .auth-tabs {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-        }
+      .auth-tabs {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+      }
 
-        .auth-tabs button {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            color: var(--text-color);
-            cursor: pointer;
-            padding: 10px 20px;
-            transition: color 0.3s;
-        }
+      .auth-tabs button {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        color: var(--text-color);
+        cursor: pointer;
+        padding: 10px 20px;
+        transition: color 0.3s;
+      }
 
-        .auth-tabs button:hover {
-            color: var(--primary-color);
-        }
+      .auth-tabs button:hover {
+        color: var(--primary-color);
+      }
 
-        .auth-tabs button.active {
-            color: var(--primary-color);
-            font-weight: bold;
-        }
+      .auth-tabs button.active {
+        color: var(--primary-color);
+        font-weight: bold;
+      }
 
-        .input-field {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            font-size: 1rem;
-        }
+      .input-field {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        font-size: 1rem;
+      }
 
-        .auth-btn {
-            width: 100%;
-            background: var(--primary-color);
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
+      .auth-btn {
+        width: 100%;
+        background: var(--primary-color);
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
 
-        .auth-btn:hover {
-            background: var(--secondary-color);
-        }
+      .auth-btn:hover {
+        background: var(--secondary-color);
+      }
 
-        .chat-link {
-            display: block;
-            margin-top: 20px;
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-        }
+      .chat-link {
+        display: block;
+        margin-top: 20px;
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+      }
 
-        .g-signin-btn {
-            margin-top: 20px;
-        }
+      .g-signin-btn {
+        margin-top: 20px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="auth-container">
-        <h1>Welcome to Cure-Now</h1>
+      <h1>Welcome to Cure-Now</h1>
 
-        <div class="auth-tabs">
-            <button id="loginTab" class="active" onclick="toggleForm('login')">Login</button>
-            <button id="registerTab" onclick="toggleForm('register')">Register</button>
-        </div>
+      <div class="auth-tabs">
+        <button id="loginTab" class="active" onclick="toggleForm('login')">
+          Login
+        </button>
+        <button id="registerTab" onclick="toggleForm('register')">
+          Register
+        </button>
+      </div>
 
-        <div id="loginForm" class="auth-form">
-            <input type="email" id="loginEmail" class="input-field" placeholder="Email" required>
-            <input type="password" id="loginPassword" class="input-field" placeholder="Password" required>
-            <button class="auth-btn" onclick="loginUser()">Login</button>
-        </div>
+      <div id="loginForm" class="auth-form">
+        <input
+          type="email"
+          id="loginEmail"
+          class="input-field"
+          placeholder="Email"
+          required
+        />
+        <input
+          type="password"
+          id="loginPassword"
+          class="input-field"
+          placeholder="Password"
+          required
+        />
+        <button class="auth-btn" onclick="loginUser()">Login</button>
+      </div>
 
-        <div id="registerForm" class="auth-form" style="display: none;">
-            <input type="text" id="registerName" class="input-field" placeholder="Full Name" required>
-            <input type="email" id="registerEmail" class="input-field" placeholder="Email" required>
-            <input type="password" id="registerPassword" class="input-field" placeholder="Password" required>
-            <button class="auth-btn" onclick="registerUser()">Register</button>
-        </div>
+      <div id="registerForm" class="auth-form" style="display: none">
+        <input
+          type="text"
+          id="registerName"
+          class="input-field"
+          placeholder="Full Name"
+          required
+        />
+        <input
+          type="email"
+          id="registerEmail"
+          class="input-field"
+          placeholder="Email"
+          required
+        />
+        <input
+          type="password"
+          id="registerPassword"
+          class="input-field"
+          placeholder="Password"
+          required
+        />
+        <button class="auth-btn" onclick="registerUser()">Register</button>
+      </div>
 
-        <p>OR</p>
+      <p>OR</p>
 
-        <div id="g_id_onload"
-            data-client_id="YOUR_GOOGLE_CLIENT_ID"
-            data-context="signin"
-            data-callback="handleCredentialResponse"
-            data-auto_prompt="false">
-        </div>
-        <div class="g_id_signin g-signin-btn" data-type="standard"></div>
+      <div
+        id="g_id_onload"
+        data-client_id="YOUR_GOOGLE_CLIENT_ID"
+        data-context="signin"
+        data-callback="handleCredentialResponse"
+        data-auto_prompt="false"
+      ></div>
+      <div class="g_id_signin g-signin-btn" data-type="standard"></div>
 
-        <a href="chat.html" class="chat-link">Go to Chat</a>
+      <a href="chat.html" class="chat-link">Go to Chat</a>
     </div>
 
     <script>
-        function toggleForm(formType) {
-            if (formType === 'login') {
-                document.getElementById('loginTab').classList.add('active');
-                document.getElementById('registerTab').classList.remove('active');
-                document.getElementById('loginForm').style.display = 'block';
-                document.getElementById('registerForm').style.display = 'none';
+      function toggleForm(formType) {
+        if (formType === "login") {
+          document.getElementById("loginTab").classList.add("active");
+          document.getElementById("registerTab").classList.remove("active");
+          document.getElementById("loginForm").style.display = "block";
+          document.getElementById("registerForm").style.display = "none";
+        } else {
+          document.getElementById("registerTab").classList.add("active");
+          document.getElementById("loginTab").classList.remove("active");
+          document.getElementById("registerForm").style.display = "block";
+          document.getElementById("loginForm").style.display = "none";
+        }
+      }
+
+      function handleCredentialResponse(response) {
+        if (!response.credential) {
+          console.error("Google OAuth failed: No credential received.");
+          return;
+        }
+        console.log("Google OAuth Response:", response);
+        fetch("/auth/google", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: response.credential }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              localStorage.setItem("userToken", data.token);
+              window.location.href = "chat.html";
             } else {
-                document.getElementById('registerTab').classList.add('active');
-                document.getElementById('loginTab').classList.remove('active');
-                document.getElementById('registerForm').style.display = 'block';
-                document.getElementById('loginForm').style.display = 'none';
+              alert("Authentication failed!");
             }
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function registerUser() {
+        const name = document.getElementById("registerName").value.trim();
+        const email = document.getElementById("registerEmail").value.trim();
+        const password = document
+          .getElementById("registerPassword")
+          .value.trim();
+
+        if (!name || !email || !password) {
+          alert("All fields are required!");
+          return;
         }
 
-        function handleCredentialResponse(response) {
-            if (!response.credential) {
-                console.error("Google OAuth failed: No credential received.");
-                return;
+        fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: name, email, password }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.message === "User registered successfully!") {
+              alert("Registration successful! Please log in.");
+              toggleForm("login");
+            } else {
+              alert(data.message);
             }
-            console.log("Google OAuth Response:", response);
-            fetch('/auth/google', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token: response.credential })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    localStorage.setItem('userToken', data.token);
-                    window.location.href = 'chat.html';
-                } else {
-                    alert('Authentication failed!');
-                }
-            })
-            .catch(error => console.error('Error:', error));
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function loginUser() {
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value.trim();
+
+        if (!email || !password) {
+          alert("All fields are required!");
+          return;
         }
 
-        function registerUser() {
-            const name = document.getElementById('registerName').value.trim();
-            const email = document.getElementById('registerEmail').value.trim();
-            const password = document.getElementById('registerPassword').value.trim();
+        fetch("/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        })
+          .then((res) =>{ return res.json()})
+          .then((data) => {
+            if (data.success) {
 
-            if (!name || !email || !password) {
-                alert('All fields are required!');
-                return;
+                    console.log("Response status:", res.status);  // Check if the server is responding properly
+
+              console.log("Token: ",data)
+              localStorage.setItem("userToken", data.token);
+              // Redirect to the chat page
+              window.location.href = "http://127.0.0.1:5000/chat_page";
+            } else {
+              alert("Login failed! " + data.message);
             }
+            console.log("Data: ",data);
+            console.log("Token: ",data.token);
+            localStorage.setItem("userToken", data.token);
 
-            fetch('/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: name, email, password })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.message === 'User registered successfully!') {
-                    alert('Registration successful! Please log in.');
-                    toggleForm('login');
-                } else {
-                    alert(data.message);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
+            console.log("Token: ",localStorage.getItem("userToken"));
+            if(localStorage.getItem("userToken")){
+              window.location.href = "http://127.0.0.1:5000/chat_page";
 
-        function loginUser() {
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-
-            if (!email || !password) {
-                alert('All fields are required!');
-                return;
             }
-
-            fetch('/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    localStorage.setItem('userToken', data.token);
-                    window.location.href = 'chat.html';
-                } else {
-                    alert('Login failed! ' + data.message);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
+            
+          })
+          .catch((error) => console.error("Error:", error));
+      }
     </script>
-</body>
+  </body>
 </html>
