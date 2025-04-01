@@ -6,6 +6,8 @@ from app.utils.gemini_ops import get_llm, create_qa_chain
 
 main = Blueprint('main', __name__)
 
+
+
 # Initialize components
 embeddings = get_embeddings()
 pc = initialize_pinecone(Config.PINECONE_API_KEY, Config.PINECONE_INDEX_NAME)
@@ -17,6 +19,10 @@ qa_chain = create_qa_chain(llm, retriever)
 @main.route('/')
 def home():
     return render_template('index.html')
+
+@main.route('/chat_page', methods=['GET'])
+def chat_page():
+    return render_template('chat.html')
 
 @main.route('/chat', methods=['POST'])
 def chat():

@@ -2,3 +2,16 @@
 .env
 /backend/app/__pycache__/
 /backend/app/utils/__pycache__/
+/langgraph/
+
+*.ipynb
+test1.py
+test2.py
+
+*.mp4
+
+*.wav
+/temp
+transcript.txt
+
+*.ini
